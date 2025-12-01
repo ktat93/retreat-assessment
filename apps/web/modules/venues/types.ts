@@ -17,9 +17,14 @@ export type VenuesQuery = {
   limit?: number;
 };
 
-export type AvailabilityQuery = {
-  startDate: string;
-  endDate: string;
-  attendeeCount: number;
-  city?: string;
+export type PaginationMeta = {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+};
+
+export type PaginatedResponse<T> = {
+  data: T[];
+  meta: PaginationMeta;
 };

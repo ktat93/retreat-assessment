@@ -16,6 +16,7 @@ import { UpdateVenueDto } from './dto/update-venue.dto';
 import { FindVenuesQuery } from './dto/venues-query.dto';
 import { CheckAvailabilityDto } from './dto/check-availability.dto';
 import { Venue } from './entities/venue.entity';
+import { PaginatedResponse, PaginatedResponseDto } from '../common/dto/paginated-response.dto';
 
 @ApiTags('Venues')
 @Controller('venues')
@@ -29,8 +30,8 @@ export class VenuesController {
   }
 
   @Get()
-  @ApiOkResponse({ type: [Venue] })
-  async findAll(@Query() query: FindVenuesQuery): Promise<Venue[]> {
+  @ApiOkResponse({ type: PaginatedResponseDto(Venue) })
+  async findAll(@Query() query: FindVenuesQuery): Promise<PaginatedResponse<Venue>> {
     return this.venuesService.findAll(query);
   }
 

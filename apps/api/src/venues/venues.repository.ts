@@ -21,12 +21,25 @@ export class VenuesRepository {
     const limit = query.limit ?? 10;
     const skip = (page - 1) * limit;
 
-    return this.prisma.venue.findMany({
-      skip,
-      take: limit,
-      where,
-      orderBy: { createdAt: 'desc' },
-    });
+    const [data, total] = await Promise.all([
+      this.prisma.venue.findMany({
+        skip,
+        take: limit,
+        where,
+        orderBy: { createdAt: 'desc' },
+      }),
+      this.prisma.venue.count({ where }),
+    ]);
+
+    return {
+      data,
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   }
 
   async findUnique(id: string) {
@@ -71,10 +84,7 @@ export class VenuesRepository {
     const where: Prisma.VenueWhereInput = {};
 
     if (filters.search) {
-      where.OR = [
-        { name: { contains: filters.search, mode: 'insensitive' } },
-        { city: { contains: filters.search, mode: 'insensitive' } },
-      ];
+      where.name = { contains: filters.search, mode: 'insensitive' };
     }
 
     if (filters.city) {
