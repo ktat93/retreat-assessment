@@ -1,31 +1,62 @@
-# shadcn/ui monorepo template
+# Retreat Assessment
 
-This template is for creating a monorepo with shadcn/ui.
+A full-stack venue booking inquiry application built with Next.js and NestJS.
 
-## Usage
+## Tech Stack
+
+- **Frontend**: Next.js 15, React 19, TanStack Query, React Hook Form, Zod, shadcn/ui
+- **Backend**: NestJS 11, Prisma, PostgreSQL
+- **Monorepo**: Turborepo, pnpm
+
+## Prerequisites
+
+- Node.js >= 20
+- PostgreSQL database (or Docker)
+
+## Setup Instructions
 
 ```bash
-pnpm dlx shadcn@latest init
+docker-compose up --build
 ```
 
-## Adding components
+This starts PostgreSQL, runs migrations, seeds the database, and starts the API.
 
-To add components to your app, run the following command at the root of your `web` app:
+To run the frontend:
 
 ```bash
-pnpm dlx shadcn@latest add button -c apps/web
+pnpm install
+pnpm --filter web dev
 ```
 
-This will place the ui components in the `packages/ui/src/components` directory.
+| Application | URL |
+|-------------|-----|
+| Web (Frontend) | http://localhost:3000 |
+| API (Backend) | http://localhost:4000 |
+| API Documentation | http://localhost:4000/api-docs |
 
-## Tailwind
+## Approach & Tradeoffs
 
-Your `tailwind.config.ts` and `globals.css` are already set up to use the components from the `ui` package.
+### Why a Monorepo?
 
-## Using components
+- **Unified Development**: Single `pnpm dev` starts both apps
+- **Shared Code**: `packages/ui` contains reusable shadcn/ui components
+- **Atomic Changes**: Frontend and backend changes in single commits
+- **Build Optimization**: Turborepo caches build outputs
 
-To use the components in your app, import them from the `ui` package.
+### Technical Decisions
 
-```tsx
-import { Button } from "@workspace/ui/components/button"
-```
+- **Form validation with Zod**: Type-safe validation on client via react-hook-form
+- **Prisma**: Type-safe database queries and migrations
+
+### Tradeoffs
+
+- **No authentication**: Focused on core booking functionality
+- **Minimal error handling**: Basic error states implemented
+
+## Future Improvements
+
+- Security: Helmet, rate limiting, stricter CORS
+- Authentication: JWT with role-based access control
+- Testing: Jest, Playwright E2E tests
+- Performance: Redis caching
+- Observability: Structured logging, Sentry
