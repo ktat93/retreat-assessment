@@ -8,50 +8,42 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-  PaginationEllipsis,
 } from "@workspace/ui/components/pagination";
-import { getPaginationItems, type PaginationItem as PageItem } from "../../utils";
+import { getPaginationItems } from "../../utils";
 
 type VenuePaginationProps = {
   currentPage: number;
   totalPages: number;
-  onPageChange: (page: number) => void;
+  onPageChangeAction: (page: number) => void;
   disabled?: boolean;
 };
 
 export function VenuePagination({
   currentPage,
   totalPages,
-  onPageChange,
+  onPageChangeAction,
   disabled = false,
 }: VenuePaginationProps) {
-  const pages = useMemo(
-    () => getPaginationItems(currentPage, totalPages),
-    [currentPage, totalPages],
-  );
+  const pages = useMemo(() => getPaginationItems(totalPages), [totalPages]);
 
   const handlePageClick = useCallback(
     (page: number) => (e: React.MouseEvent) => {
       e.preventDefault();
-      if (!disabled) onPageChange(page);
+      if (!disabled) {
+        onPageChangeAction(page);
+      }
     },
-    [disabled, onPageChange],
+    [disabled, onPageChangeAction],
   );
 
-  if (totalPages <= 1) return null;
+  if (totalPages <= 1) {
+    return null;
+  }
 
   const isPrevDisabled = disabled || currentPage === 1;
   const isNextDisabled = disabled || currentPage === totalPages;
 
-  const renderPageItem = (page: PageItem, index: number) => {
-    if (page === "ellipsis") {
-      return (
-        <PaginationItem key={`ellipsis-${index}`}>
-          <PaginationEllipsis />
-        </PaginationItem>
-      );
-    }
-
+  const renderPageItem = (page: number) => {
     const isActive = page === currentPage;
 
     return (

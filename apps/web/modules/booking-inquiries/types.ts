@@ -12,20 +12,3 @@ export type BookingInquiry = {
   updatedAt: string;
   venue?: Venue;
 };
-
-export type CreateBookingInquiryData = {
-  venueId: string;
-  companyName: string;
-  email: string;
-  startDate: string;
-  endDate: string;
-  attendeeCount: number;
-};
-
-export type UpdateBookingInquiryData = {
-  companyName?: string;
-  email?: string;
-  startDate?: string;
-  endDate?: string;
-  attendeeCount?: number;
-};

@@ -13,7 +13,9 @@ function setIfDefined(
 export function buildVenuesQueryParams(query?: VenuesQuery): URLSearchParams {
   const params = new URLSearchParams();
 
-  if (!query) return params;
+  if (!query) {
+    return params;
+  }
 
   setIfDefined(params, "search", query.search);
   setIfDefined(params, "city", query.city);

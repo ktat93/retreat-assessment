@@ -1,6 +1,6 @@
 "use client";
 
-import { VenueCardSkeleton } from "../venue-card";
+import { VenueCardSkeleton } from "../venue-card-skeleton";
 import { VenueGrid } from "./index";
 
 type VenueGridLoadingProps = {

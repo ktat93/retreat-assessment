@@ -28,3 +28,10 @@ export type PaginatedResponse<T> = {
   data: T[];
   meta: PaginationMeta;
 };
+
+export type FilterOption = {
+  value: string | number;
+  label: string;
+};
+
+export type FilterSelectSize = "sm" | "md" | "lg";

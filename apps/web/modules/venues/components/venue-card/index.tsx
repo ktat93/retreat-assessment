@@ -12,14 +12,12 @@ import { Button } from "@workspace/ui/components/button";
 import type { Venue } from "../../types";
 import { formatPrice } from "../../utils";
 
-export { VenueCardSkeleton } from "./skeleton";
-
 type VenueCardProps = {
   venue: Venue;
-  onBook?: (venue: Venue) => void;
+  onBookAction?: (venue: Venue) => void;
 };
 
-export function VenueCard({ venue, onBook }: VenueCardProps) {
+export function VenueCard({ venue, onBookAction }: VenueCardProps) {
   return (
     <Card className="flex h-full flex-col transition-shadow hover:shadow-md">
       <CardHeader className="pb-2">
@@ -42,8 +40,8 @@ export function VenueCard({ venue, onBook }: VenueCardProps) {
           <span className="text-lg font-semibold">{formatPrice(venue.pricePerNight)}</span>
           <span className="text-muted-foreground text-sm"> / night</span>
         </div>
-        {onBook && (
-          <Button size="sm" onClick={() => onBook(venue)}>
+        {onBookAction && (
+          <Button size="sm" onClick={() => onBookAction(venue)}>
             Book
           </Button>
         )}

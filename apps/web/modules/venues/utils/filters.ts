@@ -1,19 +1,20 @@
-import type { Venue } from "../types";
-
-type FilterOption = {
-  value: string | number;
-  label: string;
-};
-
-const DEFAULT_CAPACITY_OPTIONS = [100, 200, 350, 500, 750];
-const DEFAULT_PRICE_OPTIONS = [4000, 6000, 8000, 10000, 12000];
+import type { Venue, FilterOption } from "../types";
+import {
+  DEFAULT_CAPACITY_OPTIONS,
+  DEFAULT_PRICE_OPTIONS,
+} from "../constants";
 
 export function getCityOptions(venues: Venue[]): FilterOption[] {
-  const uniqueCities = [...new Set(venues.map((v) => v.city))].sort();
+  const cityCounts = venues.reduce<Record<string, number>>((acc, venue) => {
+    acc[venue.city] = (acc[venue.city] || 0) + 1;
+    return acc;
+  }, {});
 
-  return uniqueCities.map((city) => ({
+  const sortedCities = Object.keys(cityCounts).sort();
+
+  return sortedCities.map((city) => ({
     value: city,
-    label: city,
+    label: `${city} (${cityCounts[city]})`,
   }));
 }
 
@@ -43,4 +44,3 @@ export function getPriceOptions(venues: Venue[]): FilterOption[] {
   }));
 }
 
-export type { FilterOption };

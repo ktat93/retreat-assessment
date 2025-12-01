@@ -1,9 +1,6 @@
 import { api } from "@/lib/api";
-import type {
-  BookingInquiry,
-  CreateBookingInquiryData,
-  UpdateBookingInquiryData,
-} from "./types";
+import type { BookingInquiry } from "./types";
+import type { BookingInquiryFormData } from "./schema";
 
 class Service {
   private static instance: Service;
@@ -17,24 +14,8 @@ class Service {
     return Service.instance;
   }
 
-  getAll() {
-    return api.get<BookingInquiry[]>("/booking-inquiries");
-  }
-
-  getById(id: string) {
-    return api.get<BookingInquiry>(`/booking-inquiries/${id}`);
-  }
-
-  create(data: CreateBookingInquiryData) {
+  create(data: BookingInquiryFormData) {
     return api.post<BookingInquiry>("/booking-inquiries", data);
-  }
-
-  update(id: string, data: UpdateBookingInquiryData) {
-    return api.patch<BookingInquiry>(`/booking-inquiries/${id}`, data);
-  }
-
-  delete(id: string) {
-    return api.delete<void>(`/booking-inquiries/${id}`);
   }
 }
 

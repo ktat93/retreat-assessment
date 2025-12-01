@@ -6,58 +6,51 @@ import {
   SelectValue,
 } from "@workspace/ui/components/select";
 import { FormControl } from "@workspace/ui/components/form";
-
-const ALL_VALUE = "all";
-
-type SelectOption = {
-  value: string | number;
-  label: string;
-};
-
-type FilterSelectSize = "sm" | "md" | "lg";
+import {
+  FILTER_SELECT_ALL_VALUE,
+  FILTER_SELECT_SIZE_CLASSES,
+} from "../../constants";
+import type { FilterOption, FilterSelectSize } from "../../types";
 
 type FilterSelectProps = {
   value: string | number | undefined;
-  onChange: (value: string | number | undefined) => void;
-  options: SelectOption[];
+  onChangeAction: (value: string | number | undefined) => void;
+  options: FilterOption[];
   placeholder: string;
   allLabel: string;
   size?: FilterSelectSize;
 };
 
-const SIZE_CLASSES: Record<FilterSelectSize, string> = {
-  sm: "w-[120px]",
-  md: "w-[140px]",
-  lg: "w-[160px]",
-};
-
 export function FilterSelect({
   value,
-  onChange,
+  onChangeAction,
   options,
   placeholder,
   allLabel,
   size = "md",
 }: FilterSelectProps) {
   const handleChange = (selectedValue: string) => {
-    if (selectedValue === ALL_VALUE) {
-      onChange(undefined);
+    if (selectedValue === FILTER_SELECT_ALL_VALUE) {
+      onChangeAction(undefined);
       return;
     }
 
     const option = options.find((opt) => opt.value.toString() === selectedValue);
-    onChange(option?.value);
+    onChangeAction(option?.value);
   };
 
   return (
-    <Select onValueChange={handleChange} value={value?.toString() ?? ALL_VALUE}>
+    <Select
+      onValueChange={handleChange}
+      value={value?.toString() ?? FILTER_SELECT_ALL_VALUE}
+    >
       <FormControl>
-        <SelectTrigger className={SIZE_CLASSES[size]}>
+        <SelectTrigger className={FILTER_SELECT_SIZE_CLASSES[size]}>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
       </FormControl>
       <SelectContent>
-        <SelectItem value={ALL_VALUE}>{allLabel}</SelectItem>
+        <SelectItem value={FILTER_SELECT_ALL_VALUE}>{allLabel}</SelectItem>
         {options.map((option) => (
           <SelectItem key={option.value} value={option.value.toString()}>
             {option.label}
@@ -68,4 +61,3 @@ export function FilterSelect({
   );
 }
 
-export type { SelectOption, FilterSelectSize };
